@@ -2,23 +2,35 @@
 //  Created by escoz on 11/1/11.
 //
 
-#import <Foundation/Foundation.h>
 #import <objc/runtime.h>
-#import "QRootElement.h"
+
+NSDictionary * QRootElementJSONBuilderConversionDict;
+
+@interface QRootElement ()
+- (void)initializeMappings;
+
+@end
 
 @implementation QRootElement (JSONBuilder)
 
-- (void)updateObject:(id)section withPropertiesFrom:(NSDictionary *)dict {
+- (void)updateObject:(id)obj withPropertiesFrom:(NSDictionary *)dict {
     for (NSString *key in dict.allKeys){
+        if ([key isEqualToString:@"type"])
+            continue;
+
         id value = [dict valueForKey:key];
-        if ([value isKindOfClass:[NSString class]] && [section respondsToSelector:NSSelectorFromString(key)]) {
-            [section setValue:value forKey:key];
+        if ([value isKindOfClass:[NSString class]] && [obj respondsToSelector:NSSelectorFromString(key)]) {
+            [obj setValue:value forKey:key];
+            if ([QRootElementJSONBuilderConversionDict objectForKey:key]!=nil) {
+                [obj setValue:[[QRootElementJSONBuilderConversionDict objectForKey:key] objectForKey:value] forKey:key];
+            }
+        } else if ([value isKindOfClass:[NSNumber class]]){
+            [obj setValue:value forKey:key];
         }
     }
 }
 
 - (QElement *)buildElementWithJson:(NSDictionary *)dict {
-    NSLog(@"element %@", dict);
     QElement *element = [[NSClassFromString([dict valueForKey:@"type"]) alloc] init];
     if (element==nil)
             return nil;
@@ -26,7 +38,7 @@
     return element;
 }
 
-- (void)buildSectionWithJson:(NSDictionary *)dict {
+- (void)buildSectionWithJSON:(NSDictionary *)dict {
     QSection *sect = [[QSection alloc] init];
     [self updateObject:sect withPropertiesFrom:dict];
     [self addSection:sect];
@@ -37,9 +49,8 @@
 
 - (void)buildRootWithJSON:(NSDictionary *)dict {
     [self updateObject:self withPropertiesFrom:dict];
-    self.grouped = [[dict valueForKey:@"grouped"] boolValue];
     for (id section in (NSArray *)[dict valueForKey:@"root"]){
-        [self buildSectionWithJson:section];
+        [self buildSectionWithJSON:section];
     }
 }
 
@@ -51,12 +62,72 @@
     NSAssert(JSONSerialization != NULL, @"No JSON serializer available!");
     
     if (self!=nil){
+        if (QRootElementJSONBuilderConversionDict==nil)
+            [self initializeMappings];
+
         NSError *jsonParsingError = nil;
         NSString *filePath = [[NSBundle mainBundle] pathForResource:jsonPath ofType:@"json"];
         NSDictionary *jsonRoot = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&jsonParsingError];
         [self buildRootWithJSON:jsonRoot];
     }
-    return self;}
+    return self;
+}
+
+
+- (void)initializeMappings {
+    QRootElementJSONBuilderConversionDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+
+                    [[NSDictionary alloc] initWithObjectsAndKeys:
+                        [NSNumber numberWithInt:UITextAutocapitalizationTypeNone], @"None",
+                                [NSNumber numberWithInt:UITextAutocapitalizationTypeWords], @"Words",
+                                [NSNumber numberWithInt:UITextAutocapitalizationTypeSentences], @"Sentences",
+                                [NSNumber numberWithInt:UITextAutocapitalizationTypeAllCharacters], @"AllCharacters",
+                                nil], @"autocapitalizationType",
+
+                    [[NSDictionary alloc] initWithObjectsAndKeys:
+                            [NSNumber numberWithInt:UITextAutocorrectionTypeDefault], @"Default",
+                                    [NSNumber numberWithInt:UITextAutocorrectionTypeNo], @"No",
+                                    [NSNumber numberWithInt:UITextAutocorrectionTypeYes], @"Yes",
+                                    nil], @"autocorrectionType",
+
+
+
+                    [[NSDictionary alloc] initWithObjectsAndKeys:
+                                    [NSNumber numberWithInt:UIKeyboardTypeDefault], @"Default",
+                                    [NSNumber numberWithInt:UIKeyboardTypeASCIICapable], @"ASCIICapable",
+                                    [NSNumber numberWithInt:UIKeyboardTypeNumbersAndPunctuation], @"NumbersAndPunctuation",
+                                    [NSNumber numberWithInt:UIKeyboardTypeURL], @"URL",
+                                    [NSNumber numberWithInt:UIKeyboardTypeNumberPad], @"NumberPad",
+                                    [NSNumber numberWithInt:UIKeyboardTypePhonePad], @"PhonePad",
+                                    [NSNumber numberWithInt:UIKeyboardTypeNamePhonePad], @"NamePhonePad",
+                                    [NSNumber numberWithInt:UIKeyboardTypeEmailAddress], @"EmailAddress",
+                                    [NSNumber numberWithInt:UIKeyboardTypeDecimalPad], @"DecimalPad",
+                                    [NSNumber numberWithInt:UIKeyboardTypeTwitter], @"Twitter",
+                                    [NSNumber numberWithInt:UIKeyboardTypeAlphabet], @"Alphabet",
+                                    nil], @"keyboardType",
+
+                    [[NSDictionary alloc] initWithObjectsAndKeys:
+                            [NSNumber numberWithInt:UIKeyboardAppearanceDefault], @"Default",
+                                    [NSNumber numberWithInt:UIKeyboardAppearanceAlert], @"Alert",
+                                    nil], @"keyboardAppearance",
+
+
+                    [[NSDictionary alloc] initWithObjectsAndKeys:
+                                    [NSNumber numberWithInt:UIReturnKeyDefault], @"Default",
+                                    [NSNumber numberWithInt:UIReturnKeyGo], @"Go",
+                                    [NSNumber numberWithInt:UIReturnKeyGoogle], @"Google",
+                                    [NSNumber numberWithInt:UIReturnKeyJoin], @"Join",
+                                    [NSNumber numberWithInt:UIReturnKeyNext], @"Next",
+                                    [NSNumber numberWithInt:UIReturnKeyRoute], @"Route",
+                                    [NSNumber numberWithInt:UIReturnKeySearch], @"Search",
+                                    [NSNumber numberWithInt:UIReturnKeySend], @"Send",
+                                    [NSNumber numberWithInt:UIReturnKeyYahoo], @"Yahoo",
+                                    [NSNumber numberWithInt:UIReturnKeyDone], @"Done",
+                                    [NSNumber numberWithInt:UIReturnKeyEmergencyCall], @"EmergencyCall",
+                                    nil], @"returnKeyType",
+
+                    nil];
+}
 
 
 @end
