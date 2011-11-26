@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C154F94147D624900BEEEA9 /* QSpinnerElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C154F92147D624900BEEEA9 /* QSpinnerElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2C154F95147D624900BEEEA9 /* QSpinnerElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C154F93147D624900BEEEA9 /* QSpinnerElement.m */; };
 		2C542394145ADEBD0026A152 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D80B0E3913E052DF00FA85CA /* Foundation.framework */; };
 		2C54239F145ADF2B0026A152 /* QuickDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = D8F180E813F0599A009B0C9E /* QuickDialog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2C5423A0145ADF2B0026A152 /* QDecimalTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = D8F180E813F0599A009B0C9C /* QDecimalTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -114,6 +116,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C154F92147D624900BEEEA9 /* QSpinnerElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QSpinnerElement.h; path = quickdialog/QSpinnerElement.h; sourceTree = SOURCE_ROOT; };
+		2C154F93147D624900BEEEA9 /* QSpinnerElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QSpinnerElement.m; path = quickdialog/QSpinnerElement.m; sourceTree = SOURCE_ROOT; };
 		2C542393145ADEBD0026A152 /* libQuickDialog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQuickDialog.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CE450A9145ADFAC00B77D0E /* libQuickDialog-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "libQuickDialog-Prefix.pch"; path = "libQuickDialog/libQuickDialog-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		D80B0E3313E052DF00FA85CA /* QuickDialogExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickDialogExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -419,6 +423,8 @@
 				D811F8BD13EC905B00E3922B /* QWebElement.m */,
 				D811F8BE13EC905B00E3922B /* QWebViewController.h */,
 				D811F8BF13EC905B00E3922B /* QWebViewController.m */,
+				2C154F92147D624900BEEEA9 /* QSpinnerElement.h */,
+				2C154F93147D624900BEEEA9 /* QSpinnerElement.m */,
 			);
 			name = quickdialog;
 			path = quickform;
@@ -466,6 +472,7 @@
 				2C5423DA145ADF2B0026A152 /* QTextElement.h in Headers */,
 				2C5423DC145ADF2B0026A152 /* QWebElement.h in Headers */,
 				2C5423DE145ADF2B0026A152 /* QWebViewController.h in Headers */,
+				2C154F94147D624900BEEEA9 /* QSpinnerElement.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +600,7 @@
 				2C5423DD145ADF2B0026A152 /* QWebElement.m in Sources */,
 				2C5423DF145ADF2B0026A152 /* QWebViewController.m in Sources */,
 				D8F180E813F0599A009B0CA2 /* QRootElement+JSONBuilder.m in Sources */,
+				2C154F95147D624900BEEEA9 /* QSpinnerElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
