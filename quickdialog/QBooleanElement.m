@@ -58,7 +58,7 @@
 
 - (void)selected:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller indexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    _boolValue = !_boolValue;
+    self.boolValue = !_boolValue;
     if ([cell.accessoryView class] == [UIImageView class]){
         ((UIImageView *)cell.accessoryView).image =  _boolValue ? _onImage : _offImage;
     }
@@ -67,7 +67,7 @@
 
 
 - (void)switched:(id)boolSwitch {
-    _boolValue = ((UISwitch *)boolSwitch).on;
+    self.boolValue = ((UISwitch *)boolSwitch).on;
 }
 
 - (void)fetchValueIntoObject:(id)obj {
